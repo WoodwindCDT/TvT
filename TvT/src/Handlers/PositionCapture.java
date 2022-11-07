@@ -1,4 +1,4 @@
-package Extenders;
+package Handlers;
 import Objects.Missle;
 import Objects.Tank;
 
@@ -8,8 +8,9 @@ public class PositionCapture {
     Object myObject; // stores reference to object can be Missle, Tank
     double controlled_pos_x;
     double controlled_pos_y;
+    double distance_traveled;
     
-    public PositionCapture() {}
+    public PositionCapture() {};
 
     public void setObjectforCapture(Object o) {
         this.myObject = o;
@@ -27,13 +28,34 @@ public class PositionCapture {
 
     public double[] getObjectCurrentPosition() {
         return new double[]{this.controlled_pos_x, this.controlled_pos_y}; // returns double array contains x,y coord of object
-    }
+    };
 
     public void setObjectCurrentPosition_X(double x) {
+        setDistanceTraveled(x);
         this.controlled_pos_x = x;
-    }
+    };
 
     public void setObjectCurrentPosition_Y(double y) {
+        // this.setDistanceTraveled(y);
         this.controlled_pos_y = y;
-    }
-}
+    };
+
+    public String distanceTraveled() {
+        double tempDT = this.distance_traveled;
+        if (tempDT > 0) {
+            this.distance_traveled = 0; // reset distance for next check
+            if (this.myObject instanceof Tank) {
+                return ((Tank)this.myObject).getName() + " moved " + (tempDT);
+            }
+            if (this.myObject instanceof Missle) {
+                return ((Missle)this.myObject).getName() + " moved " + (tempDT);
+            }
+        }
+        return "No Movement Detected";
+    };
+
+    public void setDistanceTraveled(double position) {
+        // set distance traveled
+        this.distance_traveled =  Math.abs(position - this.controlled_pos_x);
+    };
+};
