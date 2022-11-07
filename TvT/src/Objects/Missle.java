@@ -2,6 +2,7 @@ package Objects;
 import Interfaces.MissleInterface;
 import Interfaces.ObjectInterface;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Missle implements MissleInterface, ObjectInterface {
 
@@ -13,6 +14,7 @@ public class Missle implements MissleInterface, ObjectInterface {
     private double objPosY;
     private double condition;
     private double resistance;
+    private Rectangle body;
 
     // default constructor
     public Missle() {
@@ -109,5 +111,15 @@ public class Missle implements MissleInterface, ObjectInterface {
     @Override
     public void setResistance(double resistance) {
         this.resistance = resistance;
+    }
+
+    @Override
+    public void setBody(Rectangle x) {
+        this.body = x;
+    }
+
+    @Override
+    public Rectangle getBody() {
+        return this.body;
     }
 }

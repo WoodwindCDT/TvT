@@ -20,7 +20,9 @@ public class EnvironmentPane extends Pane {
     // Properties for visual interaction
     ArrayList<Object> arr = new ArrayList<Object>(); // ArrayList should contain all objects for rendering
     int score = 0; // for testing
+    String message = "";
     Text displayScore = new Text(50, 50, Integer.toString(this.score)); // Will get score from controller
+    Text displayMessage = new Text(100, 200, this.message);
     Button addBtn = new Button("Add to Count");
     Controller controller;
 
@@ -41,6 +43,7 @@ public class EnvironmentPane extends Pane {
 
         System.out.println("Controller created and passed ref: " + controller);
         this.arr.add(this.displayScore);
+        this.arr.add(this.displayMessage);
         this.arr.add(this.addBtn);
         this.arr.add(this.terrain);
 
@@ -57,6 +60,12 @@ public class EnvironmentPane extends Pane {
         this.score = num;
         this.displayScore.setText(Integer.toString(score));
     }
+
+    // Display Text to pane via Text object creation and pass to pane children
+    public void changeText(String msg) {
+        this.message = msg;
+        this.displayMessage.setText(this.message);
+    };
 
     public void addToChildren(ArrayList<Object> arr) {
         for (Object object : arr) {
@@ -77,15 +86,17 @@ public class EnvironmentPane extends Pane {
             }
             if (object instanceof Tank) {
                 Tank t = (Tank)object;
+                // Likely reduce this to a single function
                 double[] pos = t.getObjectCurrentPosition();
                 Rectangle rec = new Rectangle(pos[0], pos[1], 30, 20); // 30 and 40 are chosen JUST to display
                 rec.setFill(t.getColor());
+                t.setBody(rec);
                 this.setOnKeyPressed(e -> {
-                    this.controller.changeTankPosition(e); // TODO: issue with only one rectangle moving at a time, added boolean to change turn, but still not working
-                    rec.setX(t.getObjectCurrentPosition()[0]);
+                    this.controller.changeTankPosition(e);
+                    this.controller.getInPlay().getBody().setX(this.controller.getInPlay().getObjectCurrentPosition()[0]);
                 });
-                this.getChildren().add(rec);
-            }
-        }
-    }
-}
+                this.getChildren().add(t.getBody());
+            };
+        };
+    };
+};

@@ -1,8 +1,10 @@
 package Objects;
+
 import Extenders.PositionCapture;
 import Interfaces.ObjectInterface;
 import Interfaces.TankInterface;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Tank extends PositionCapture implements TankInterface, ObjectInterface {
 
@@ -15,6 +17,7 @@ public class Tank extends PositionCapture implements TankInterface, ObjectInterf
     private double objPosY; // starting position at any time
     private double condition; // should be 100 "default" but can change if user may set something, or the
     private Missle missle;
+    private Rectangle body;
 
     // default constructor
     public Tank() {
@@ -115,5 +118,15 @@ public class Tank extends PositionCapture implements TankInterface, ObjectInterf
     @Override
     public void setCondition(double condition) {
         this.condition = condition;
+    }
+
+    @Override
+    public void setBody(Rectangle x) {
+        this.body = x;
+    }
+
+    @Override
+    public Rectangle getBody() {
+        return this.body;
     }
 }

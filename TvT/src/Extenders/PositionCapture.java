@@ -22,8 +22,8 @@ public class PositionCapture {
         if (o instanceof Missle) {
             this.controlled_pos_x = ((Missle)o).getObjectX();
             this.controlled_pos_y = ((Missle)o).getObjectY();
-        }
-    }
+        };
+    };
 
     public double[] getObjectCurrentPosition() {
         return new double[]{this.controlled_pos_x, this.controlled_pos_y}; // returns double array contains x,y coord of object

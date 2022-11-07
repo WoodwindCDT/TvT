@@ -1,10 +1,12 @@
 package Interfaces;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public interface ObjectInterface {
     // methods every controller object should use
     // setter
     public void setColor(Color color);
+    public void setBody(Rectangle r);
     public void setName(String name);
     public void setSpeed(double speed);
     public void setPower(double power); // Power could be universal, missle has x power for damage, and tank has x power for initial velocity of missle
@@ -13,6 +15,7 @@ public interface ObjectInterface {
     public void setCondition(double condition); // Condition of item should be greater than zero to be functional
     // getter
     public Color getColor();
+    public Rectangle getBody();
     public String getName();
     public double getSpeed();
     public double getPower();
