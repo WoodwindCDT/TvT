@@ -2,7 +2,6 @@ package Extenders;
 import java.util.ArrayList;
 
 import Handlers.Controller;
-import Objects.Missle;
 import Objects.Tank;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -37,10 +36,6 @@ public class EnvironmentPane extends Pane {
         // Setting Pane preferences
         System.out.println("Environmet Pane loaded");
         this.controller = new Controller(this); // Controller will contain reference to Environment Pane for "Control over properties"
-
-        //Adding tanks to controller
-         // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
-        this.controller.addTank(new Tank("t1", Color.RED, 10, 20, 0, 30, 100, new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)), (new Tank("t2", Color.BLUE, 10, 20, 500, 30, 100, new Missle("m2", Color.RED, 10, 20, 0, 40, 100, 0))));
 
         System.out.println("Controller created and passed ref: " + controller);
         this.arr.add(this.displayMessage);

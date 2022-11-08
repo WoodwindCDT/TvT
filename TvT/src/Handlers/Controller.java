@@ -2,9 +2,11 @@ package Handlers;
 import java.util.ArrayList;
 
 import Extenders.EnvironmentPane;
+import Objects.Missle;
 import Objects.Tank;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 public class Controller {
 
@@ -33,6 +35,11 @@ public class Controller {
         this.ep = ep;
         System.out.println("EnvironmentPane loaded: " + this.ep);
         this.ep.changeMessage(sendAsMessage, "Welcome! I can be changed with Controller.");
+        //Adding tanks to controller
+        // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
+        Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
+        addTank(new Tank("t1", Color.RED, 10, 20, 0, 30, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 20, 500, 30, 100, arsenal)));
+
     };
 
     public void addTank(Tank t1, Tank t2) {
@@ -49,6 +56,9 @@ public class Controller {
             if (turn == false) this.in_Play = this.tanks[1];
             else this.in_Play = this.tanks[0];
 
+            // Sending to ep to show player in play
+            setEPText(sendAsPlayer, this.in_Play.getName() + " is in play.");
+
             double currPosX = this.in_Play.getObjectCurrentPosition()[0];
             //Left
             if (e.getCode() == KeyCode.LEFT && currPosX > 0) TankKELeft(currPosX); // Tank Key Event Left
@@ -63,8 +73,6 @@ public class Controller {
                 };
             };
             // finally
-            // Sending to ep to show player in play
-            // setEPText(sendAsPlayer, this.in_Play.getName() + " is in play.");
             setTankBodyPosition(); // setting result to actual tank body for user view
         } else {
             System.err.println("Cannot use that key! Try again.");
@@ -90,13 +98,11 @@ public class Controller {
     private void TankKELeft(double currPosX) {
         this.in_Play.setObjectCurrentPosition_X(currPosX - this.in_Play.getSpeed()); // speed will be how "Fast" it will change position
         setEPText(sendAsMessage, this.in_Play.distanceTraveled());
-        endTurn(); // used for testing!!! just to observe tanks can both move
     };
 
     private void TankKERight(double currPosX) {
         this.in_Play.setObjectCurrentPosition_X(currPosX + this.in_Play.getSpeed());
         setEPText(sendAsMessage, this.in_Play.distanceTraveled());
-        endTurn(); // used for testing!!! just to observe tanks can both move
     };
 
     // Missle launch start
@@ -123,6 +129,8 @@ public class Controller {
     };
 
     private void endTurn() {
+        // Sending to ep to show player in play
+        setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
         this.turn = !this.turn;
     };
-}
+};
