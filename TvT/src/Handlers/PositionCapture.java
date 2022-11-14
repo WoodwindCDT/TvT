@@ -52,10 +52,12 @@ public class PositionCapture {
 
     public void setObjectCurrentAngle(double a) {
         this.controlled_angle = a;
+        System.out.println("Angle: " + this.controlled_angle);
     };
 
     public void setObjectCurrentPower(double p) {
         this.controlled_power = p;
+        System.out.println("PWR: " + this.controlled_power);
     };
 
     public String distanceTraveled() {

@@ -183,7 +183,7 @@ public class Controller {
 
     private void endTurn() {
         // Sending to ep to show player in play
-        setEPText(sendAsMessage, "");
+        setEPText(sendAsMessage, "Launch Complete");
         setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
         this.missleLaunch = false;
         this.turn = !this.turn;
