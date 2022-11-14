@@ -15,6 +15,7 @@ public class Tank extends PositionCapture implements TankInterface, ObjectInterf
     private double power;
     private double objPosX; // starting position at any time .. if scene were to change or terrain, the position of tank would be preserved, and controller would not require to hold this
     private double objPosY; // starting position at any time
+    private double objPosAngle; // angle of launcher
     private double condition; // should be 100 "default" but can change if user may set something, or the
     private Missle[] missle;
     private Rectangle body;
@@ -128,5 +129,39 @@ public class Tank extends PositionCapture implements TankInterface, ObjectInterf
     @Override
     public Rectangle getBody() {
         return this.body;
+    }
+
+    @Override
+    public void print() {
+        System.out.println(
+            "Printing for Tank: " + this.name + '\n' +
+            "--------------------------------------" + '\n' +
+            "Color: " + getColor() + '\n' +
+            "Speed: " + getSpeed() + '\n' +
+            "Power: " + getPower() + '\n' +
+            "Condition: " + getCondition() + '\n' +
+            "X: " + getObjectX() + '\n' +
+            "Y: " + getObjectY() + '\n' +
+            "Body: " + getBody() + '\n' +
+            "Angle: " + getLauncherAngle()
+        );
+        System.out.println(
+            "Printing All Tank Missles: " + '\n' +
+            "--------------------------------------"
+        );
+        // prints missles
+        for (Missle m : this.missle) {
+            m.print();
+        }
+    }
+
+    @Override
+    public void setLauncherAngle(double a) {
+        this.objPosAngle = a;
+    };
+
+    @Override
+    public double getLauncherAngle() {
+        return this.objPosAngle;
     };
 };

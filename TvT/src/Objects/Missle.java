@@ -122,4 +122,21 @@ public class Missle implements MissleInterface, ObjectInterface {
     public Rectangle getBody() {
         return this.body;
     }
+
+    // gets name, color, speed, power, condition, x&y, resistance, and body
+    @Override
+    public void print() {
+        System.out.println(
+            "Printing for Missle: " + this.name + '\n' +
+            "--------------------------------------" + '\n' +
+            "Color: " + getColor() + '\n' +
+            "Speed: " + getSpeed() + '\n' +
+            "Power: " + getPower() + '\n' +
+            "Condition: " + getCondition() + '\n' +
+            "X: " + getObjectX() + '\n' +
+            "Y: " + getObjectY() + '\n' +
+            "Resistance: " + getResistance() + '\n' +
+            "Body: " + getBody() + '\n'
+        );
+    }
 }

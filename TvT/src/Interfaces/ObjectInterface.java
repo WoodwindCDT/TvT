@@ -21,5 +21,6 @@ public interface ObjectInterface {
     public double getPower();
     public double getObjectX();
     public double getObjectY();
-    public double getCondition(); 
+    public double getCondition();
+    public void print();
 }

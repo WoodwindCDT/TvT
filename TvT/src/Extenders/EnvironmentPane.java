@@ -12,13 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class EnvironmentPane extends Pane {
-
-    // Page properties
-    int bound_top = 0;
-    int bound_bot = 600;
-    int bound_left = 0;
-    int bound_right = 700;
-
     // Properties for visual interaction
     ArrayList<Object> arr = new ArrayList<Object>(); // ArrayList should contain all objects for rendering
     // displayScore will be fed by controller

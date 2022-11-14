@@ -1,6 +1,5 @@
 package Handlers;
 import java.util.ArrayList;
-
 import Extenders.EnvironmentPane;
 import Objects.Missle;
 import Objects.Tank;
@@ -11,12 +10,20 @@ import javafx.scene.paint.Color;
 public class Controller {
 
     private final int TANK_AMOUNT = 2;
+    private final double angleMin = 0;
+    private final double angleMax = 180;
+    
     // Possible key inputs WE want
     ArrayList<KeyCode> keys = new ArrayList<>() {
         {
-            add (KeyCode.LEFT);
-            add (KeyCode.RIGHT);
-            add (KeyCode.SPACE);
+            add(KeyCode.LEFT); // mvmnt left
+            add(KeyCode.RIGHT); // mvmnt right
+            add(KeyCode.SPACE); // interface allowing missle launch
+            add(KeyCode.A); // interface allowing -1 from angle of shot
+            add(KeyCode.D); // interface allowing +1 adds to angle of shot
+            add(KeyCode.W); // increases power of shot
+            add(KeyCode.S); // decreases power of shot
+            add(KeyCode.ENTER); // dials in power/angle
         };
     };
 
@@ -28,6 +35,7 @@ public class Controller {
     private boolean turn = true; // player 1 = true, player 2 = false
     private boolean missleLaunch = false;
     private Tank in_Play; // player 1 is first
+    private Calculation calc; // player launch calculations
     
     // default constructor
     public Controller(EnvironmentPane ep) {
@@ -38,20 +46,18 @@ public class Controller {
         //Adding tanks to controller
         // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
         Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
-        addTank(new Tank("t1", Color.RED, 10, 20, 0, 30, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 20, 500, 30, 100, arsenal)));
-
+        addTank(new Tank("t1", Color.RED, 10, 0, 0, 30, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 30, 100, arsenal)));
     };
 
-    public void addTank(Tank t1, Tank t2) {
-        this.tanks[0] = t1;
-        this.tanks[1] = t2;
+    public void addTank(PositionCapture t1, PositionCapture t2) {
+        this.tanks[0] = (Tank)t1;
+        this.tanks[1] = (Tank)t2;
     };
 
     // Handles input from user during their turn
     public void changeTankPosition(KeyEvent e) {
         // check to see if key is expected
-        if (this.keys.contains(e.getCode())) {
-
+        if (checkKey(e)) {
             // Player 2 turn
             if (turn == false) this.in_Play = this.tanks[1];
             else this.in_Play = this.tanks[0];
@@ -60,18 +66,26 @@ public class Controller {
             setEPText(sendAsPlayer, this.in_Play.getName() + " is in play.");
 
             double currPosX = this.in_Play.getObjectCurrentPosition()[0];
+            double[] launchArgs = this.in_Play.getObjectCurrentLaunchPosition();
             //Left
             if (e.getCode() == KeyCode.LEFT && currPosX > 0) TankKELeft(currPosX); // Tank Key Event Left
             //Right
             if (e.getCode() == KeyCode.RIGHT && currPosX < 670) TankKERight(currPosX); // will not allow past right border
             if (e.getCode() == KeyCode.SPACE) {
-                if (!this.missleLaunch) TankKESpace(); // should assign calculator for listening to angle and initial velocity
+                if (!this.missleLaunch) TankKESpace(launchArgs); // should assign calculator for listening to angle and initial velocity
                 else {
                     System.err.println("Cannot launch twice in one turn!");
                     System.out.println("Issuer: " + this + " suspect: " + this.in_Play.getName());
                     return;
-                };
+                }; 
             };
+            // Launches missle
+            if (e.getCode() == KeyCode.ENTER) TankKEEnter(); 
+            // key events for setting power and angle
+            if (e.getCode() == KeyCode.W) TankKEW(launchArgs[0]);
+            if (e.getCode() == KeyCode.S) TankKES(launchArgs[0]);
+            if (e.getCode() == KeyCode.A) TankKEA(launchArgs[1]);
+            if (e.getCode() == KeyCode.D) TankKED(launchArgs[1]);
             // finally
             setTankBodyPosition(); // setting result to actual tank body for user view
         } else {
@@ -80,11 +94,22 @@ public class Controller {
         };
     };
 
-    private void handleMissleLaunch() {
-        setEPText(sendAsMessage, "Missle Launch is ready: " + this.missleLaunch + "\n -> commanded by: " + this.in_Play.getName());
-        System.out.println("omg we're about to die: Launch complete");
-        this.missleLaunch = !this.missleLaunch;
-        endTurn();
+    // Handling calculation calling!
+    private void handleMissleLaunch(double v, double a) {
+
+        // setting instance on controller only THIS launch
+        // provides tanks, angle and velocity from user as well
+        this.calc = new Calculation(provideTanks(), v, a);
+    
+        if (this.calc.readyToFire()) {
+            this.missleLaunch = this.calc.readyToFire();
+            setEPText(sendAsMessage, "Missle Launch is ready: " + this.calc.readyToFire() + "\n -> commanded by: " + this.in_Play.getName()
+            + '\n' +
+            "Press ENTER/RETURN Key to fire!"
+            );
+            return;
+        }
+        setEPText(sendAsMessage, "Missle not ready for launch: " + "\n -> commanded by: " + this.in_Play.getName());
     };
 
     // Setting final position of x,y to tank body
@@ -106,10 +131,38 @@ public class Controller {
     };
 
     // Missle launch start
-    private void TankKESpace() {
-        this.missleLaunch = true;
-        handleMissleLaunch();
-        // tank turn now determined POST launch
+    private void TankKESpace(double[] largs) {
+        // Expecting some angle and power from user
+        // double velocity = largs[0];
+        // double angle = largs[1]; // preset vars for testing only
+        handleMissleLaunch(largs[0], largs[1]);
+    };
+
+    private void TankKEEnter() {
+        if (this.missleLaunch && this.calc.readyToFire()) {
+            // should fire missle
+            new MissleLaunch(this.calc);
+            endTurn();
+        };
+    }
+
+    // handle temp power state
+    private void TankKEW(double pwr) {
+        // should reference tank's power cap when the object is created
+        if (pwr + 1 <= 100) this.in_Play.setObjectCurrentPower(++pwr);
+    };
+
+    private void TankKES(double pwr) {
+        if (pwr - 1 >= 0) this.in_Play.setObjectCurrentPower(--pwr);
+    };
+
+    // handle angle position
+    private void TankKEA(double a) {
+        if (a - 1 >= this.angleMin) this.in_Play.setObjectCurrentAngle(--a);
+    };
+
+    private void TankKED(double a) {
+        if (a + 1 <= this.angleMax) this.in_Play.setObjectCurrentAngle(++a);
     };
 
     // Sets environment pane text
@@ -130,7 +183,15 @@ public class Controller {
 
     private void endTurn() {
         // Sending to ep to show player in play
+        setEPText(sendAsMessage, "");
         setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
+        this.missleLaunch = false;
         this.turn = !this.turn;
     };
+
+    // checks to see if key is acceptable/expected
+    private boolean checkKey(KeyEvent e) {
+        if (this.keys.contains(e.getCode())) return true;
+        return false;
+    }
 };
