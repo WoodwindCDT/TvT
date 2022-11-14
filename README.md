@@ -1,4 +1,21 @@
 # TvT
+
+---
+```
+KeyPress:
+W = Power +1 Max is Tank's power maximum (set on tank creation)
+S = Power -1 Min is 1
+A = Angle of Tank Launcher -1
+D = Angle of Tank Launcher +1
+Space = Set calculations AND Prepare for Missle Launch
+Enter = Launch Missle
+
+Main success Missle Launch:
+User clicks Key "W" to increase initical velocity applied at launch
+User clicks Key "D" to increase angle at which a missle will fire
+User clicks Key "Space" to check if their Tank is ready for launch
+User clicks Key "Enter" to fire missle
+```
 ## Getting Started
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
