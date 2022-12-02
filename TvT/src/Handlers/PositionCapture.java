@@ -35,6 +35,14 @@ public class PositionCapture {
         return new double[]{this.controlled_pos_x, this.controlled_pos_y}; // returns double array contains x,y coord of object
     };
 
+    public double getObjectCurrentPostionX() {
+        return this.controlled_pos_x;
+    }
+
+    public double getObjectCurrentPostionY() {
+        return this.controlled_pos_y;
+    }
+
     // power 0, angle 1;
     public double[] getObjectCurrentLaunchPosition() {
         return new double[]{this.controlled_power, this.controlled_angle}; // returns double array contains x,y coord of object

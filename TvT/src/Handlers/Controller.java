@@ -123,11 +123,19 @@ public class Controller {
     private void TankKELeft(double currPosX) {
         this.in_Play.setObjectCurrentPosition_X(currPosX - this.in_Play.getSpeed()); // speed will be how "Fast" it will change position
         setEPText(sendAsMessage, this.in_Play.distanceTraveled());
+        this.ep.moveAngleText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
+        this.ep.movePowerText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
+        if(turn) this.ep.moveTank1GunX(-(this.in_Play.getSpeed()));
+        else this.ep.moveTank2GunX(-(this.in_Play.getSpeed()));
     };
 
     private void TankKERight(double currPosX) {
         this.in_Play.setObjectCurrentPosition_X(currPosX + this.in_Play.getSpeed());
         setEPText(sendAsMessage, this.in_Play.distanceTraveled());
+        this.ep.moveAngleText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
+        this.ep.movePowerText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
+        if(turn) this.ep.moveTank1GunX(this.in_Play.getSpeed());
+        else this.ep.moveTank2GunX(this.in_Play.getSpeed());
     };
 
     // Missle launch start
@@ -162,11 +170,13 @@ public class Controller {
     private void TankKEA(double a) {
         if (a - 1 >= this.angleMin) this.in_Play.setObjectCurrentAngle(--a);
         this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
+        this.ep.rotateTank1Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
     };
 
     private void TankKED(double a) {
         if (a + 1 <= this.angleMax) this.in_Play.setObjectCurrentAngle(++a);
         this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
+        this.ep.rotateTank1Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
     };
 
     // Sets environment pane text
@@ -191,6 +201,10 @@ public class Controller {
         setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
         this.missleLaunch = false;
         this.turn = !this.turn;
+        this.ep.changeAngle(0);
+        this.ep.changePower(0);
+        if(this.turn) this.ep.highlightTank1();
+        else this.ep.highlightTank2();
     };
 
     // checks to see if key is acceptable/expected
