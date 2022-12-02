@@ -150,19 +150,23 @@ public class Controller {
     private void TankKEW(double pwr) {
         // should reference tank's power cap when the object is created
         if (pwr + 1 <= 100) this.in_Play.setObjectCurrentPower(++pwr);
+        this.ep.changePower(this.in_Play.getObjectCurrentPower());;
     };
 
     private void TankKES(double pwr) {
         if (pwr - 1 >= 0) this.in_Play.setObjectCurrentPower(--pwr);
+        this.ep.changePower(this.in_Play.getObjectCurrentPower());;
     };
 
     // handle angle position
     private void TankKEA(double a) {
         if (a - 1 >= this.angleMin) this.in_Play.setObjectCurrentAngle(--a);
+        this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
     };
 
     private void TankKED(double a) {
         if (a + 1 <= this.angleMax) this.in_Play.setObjectCurrentAngle(++a);
+        this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
     };
 
     // Sets environment pane text
