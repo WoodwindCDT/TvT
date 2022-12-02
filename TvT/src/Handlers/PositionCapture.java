@@ -54,10 +54,18 @@ public class PositionCapture {
         System.out.println("Angle: " + this.controlled_angle);
     };
 
+    public double getObjectControlledAngle() {
+        return this.controlled_angle;
+    }
+
     public void setObjectCurrentPower(double p) {
         this.controlled_power = p;
         System.out.println("PWR: " + this.controlled_power);
     };
+
+    public double getObjectCurrentPower() {
+        return this.controlled_power;
+    }
 
     public String distanceTraveled() {
         double tempDT = this.distance_traveled;

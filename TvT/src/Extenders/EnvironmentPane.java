@@ -20,9 +20,15 @@ public class EnvironmentPane extends Pane {
     Text displayPlayer = new Text(200, 300, "");
     Button addBtn = new Button("Add to Count");
     Controller controller;
+    Line sLine = new Line(0, 80, 700, 80);
+    
 
     // Objects for which may adjust to inputs
-    Line terrain = new Line(0, 50, 700, 50);
+    Line terrain = new Line(0, 550, 700, 550);
+    Text tank1HPText = new Text(50, 25, "Tank 1 Health: ");
+    Text tank2HPText = new Text(400, 25, "Tank 2 Health: ");
+    Text powerText = new Text(50, 65, "Power: ");
+    Text angleText = new Text(400, 65, "Angle: ");
 
     // Default constructor
     public EnvironmentPane() {
@@ -35,6 +41,11 @@ public class EnvironmentPane extends Pane {
         this.arr.add(this.displayPlayer);
         this.arr.add(this.addBtn);
         this.arr.add(this.terrain);
+        this.arr.add(this.tank1HPText);
+        this.arr.add(this.tank2HPText);
+        this.arr.add(powerText);
+        this.arr.add(angleText);
+        this.arr.add(sLine);
 
         // Add tanks to the pane
         for (Tank t : controller.provideTanks()) {
@@ -83,4 +94,17 @@ public class EnvironmentPane extends Pane {
             };
         };
     };
+
+    public void changeAngle(double angle) {
+        this.angleText.setText("Angle: " + angle);
+    }
+
+    public void changePower(double power) {
+        this.powerText.setText("Power: " + power);
+    }
+
+    public void changeHealth(double t1HP, double t2HP) {
+        this.tank1HPText.setText("Tank 1 Health: " + t1HP);
+        this.tank1HPText.setText("Tank 2 Health: " + t2HP);
+    }
 };

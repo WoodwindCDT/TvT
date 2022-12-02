@@ -46,7 +46,7 @@ public class Controller {
         //Adding tanks to controller
         // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
         Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
-        addTank(new Tank("t1", Color.RED, 10, 0, 0, 30, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 30, 100, arsenal)));
+        addTank(new Tank("t1", Color.RED, 10, 0, 90, 530, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 530, 100, arsenal)));
     };
 
     public void addTank(PositionCapture t1, PositionCapture t2) {
@@ -150,19 +150,23 @@ public class Controller {
     private void TankKEW(double pwr) {
         // should reference tank's power cap when the object is created
         if (pwr + 1 <= 100) this.in_Play.setObjectCurrentPower(++pwr);
+        this.ep.changePower(this.in_Play.getObjectCurrentPower());;
     };
 
     private void TankKES(double pwr) {
         if (pwr - 1 >= 0) this.in_Play.setObjectCurrentPower(--pwr);
+        this.ep.changePower(this.in_Play.getObjectCurrentPower());;
     };
 
     // handle angle position
     private void TankKEA(double a) {
         if (a - 1 >= this.angleMin) this.in_Play.setObjectCurrentAngle(--a);
+        this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
     };
 
     private void TankKED(double a) {
         if (a + 1 <= this.angleMax) this.in_Play.setObjectCurrentAngle(++a);
+        this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
     };
 
     // Sets environment pane text
