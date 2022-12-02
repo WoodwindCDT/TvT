@@ -190,6 +190,8 @@ public class Controller {
         setEPText(sendAsMessage, "Launch Complete");
         setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
         this.missleLaunch = false;
+        this.ep.changeAngle(0);
+        this.ep.changePower(0);
         this.turn = !this.turn;
     };
 
@@ -197,5 +199,5 @@ public class Controller {
     private boolean checkKey(KeyEvent e) {
         if (this.keys.contains(e.getCode())) return true;
         return false;
-    }
+    };
 };

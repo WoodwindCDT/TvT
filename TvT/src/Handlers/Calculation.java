@@ -13,7 +13,6 @@ import static Assets.Constants.calcfPos_X_WITHHEIGHT;
 
 import Objects.Tank;
 
-
 // Calculation class uses constant functions to provide feedback to controller/positioncapture
 public class Calculation {
     
