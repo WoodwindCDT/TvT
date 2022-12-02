@@ -46,7 +46,7 @@ public class Controller {
         //Adding tanks to controller
         // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
         Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
-        addTank(new Tank("t1", Color.RED, 10, 0, 0, 30, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 30, 100, arsenal)));
+        addTank(new Tank("t1", Color.RED, 10, 0, 90, 530, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 530, 100, arsenal)));
     };
 
     public void addTank(PositionCapture t1, PositionCapture t2) {

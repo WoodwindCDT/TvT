@@ -6,9 +6,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "TvT_91343365",
+            "vmArgs": "--module-path C:/Users/crazi/Documents/Java/javafx-sdk-18/lib --add-modules javafx.controls,javafx.fxml --enable-preview"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "${file}",
+            "vmArgs": "--module-path C:/Users/crazi/Documents/Java/javafx-sdk-18/lib --add-modules javafx.controls,javafx.fxml --enable-preview"
         },
         {
             "type": "java",
@@ -16,7 +25,7 @@
             "request": "launch",
             "mainClass": "App",
             "projectName": "TvT_eb44fa28",
-            "vmArgs": "--module-path C:/Users/Jane/Desktop/OOP/javafx-sdk-18/lib --add-modules javafx.controls,javafx.fxml --enable-preview"
+            "vmArgs": "--module-path C:/Users/crazi/Documents/Java/javafx-sdk-18/lib --add-modules javafx.controls,javafx.fxml --enable-preview"
         }
     ]
 }
