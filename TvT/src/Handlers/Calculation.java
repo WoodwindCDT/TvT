@@ -32,6 +32,8 @@ public class Calculation {
     private double capH; // max height reached
     private double Xf; // final position x of projectile
 
+    // TODO: Add missle damage
+    // TODO: Adjust calculations for other enemy tank via comparing reference of object with second tank
     // result with no height kinematics
     protected class CalcNOHeight implements CalcResultInterface {
         // complete calcs

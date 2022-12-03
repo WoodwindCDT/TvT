@@ -10,5 +10,6 @@ public class MissleLaunch {
         this.c = c;
         System.out.println("Calculation Complete");
         c.print();
+        // TODO: Add point of landing on display somewhere in here and adjust pane health
     }
 };
