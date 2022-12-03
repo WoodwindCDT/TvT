@@ -11,7 +11,7 @@ public class Controller {
 
     private final int TANK_AMOUNT = 2;
     private final double angleMin = 0;
-    private final double angleMax = 180;
+    private final double angleMax = 90;
     
     // Possible key inputs WE want
     ArrayList<KeyCode> keys = new ArrayList<>() {
@@ -169,13 +169,15 @@ public class Controller {
     private void TankKEA(double a) {
         if (a - 1 >= this.angleMin) this.in_Play.setObjectCurrentAngle(--a);
         this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
-        this.ep.rotateTank1Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
+        if(turn) this.ep.rotateTank1Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
+        else this.ep.rotateTank2Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
     };
 
     private void TankKED(double a) {
         if (a + 1 <= this.angleMax) this.in_Play.setObjectCurrentAngle(++a);
         this.ep.changeAngle(this.in_Play.getObjectControlledAngle());
-        this.ep.rotateTank1Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
+        if(turn) this.ep.rotateTank1Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
+        else this.ep.rotateTank2Gun(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectControlledAngle());
     };
 
     // Sets environment pane text
