@@ -29,6 +29,8 @@ public class EnvironmentPane extends Pane {
     Text tank2HPText = new Text(400, 25, "Tank 2 Health: ");
     Text powerText = new Text(50, 65, "Power: ");
     Text angleText = new Text(400, 65, "Angle: ");
+    Line tank1Gun = new Line(120, 530, 130, 525);
+    Line tank2Gun = new Line(500, 530, 490, 525);
 
     // Default constructor
     public EnvironmentPane() {
@@ -46,6 +48,8 @@ public class EnvironmentPane extends Pane {
         this.arr.add(powerText);
         this.arr.add(angleText);
         this.arr.add(sLine);
+        this.arr.add(tank1Gun);
+        this.arr.add(tank2Gun);
 
         // Add tanks to the pane
         for (Tank t : controller.provideTanks()) {
@@ -53,6 +57,7 @@ public class EnvironmentPane extends Pane {
         };
         
         addToChildren(this.arr);
+        highlightTank1();
     };
 
     // Display Text to pane via Text object creation and pass to pane children
@@ -106,5 +111,55 @@ public class EnvironmentPane extends Pane {
     public void changeHealth(double t1HP, double t2HP) {
         this.tank1HPText.setText("Tank 1 Health: " + t1HP);
         this.tank1HPText.setText("Tank 2 Health: " + t2HP);
+    }
+
+    public void highlightTank1() {
+        this.tank1HPText.setFill(Color.GREENYELLOW);
+        this.tank2HPText.setFill(Color.GRAY);
+    }
+
+    public void highlightTank2() {
+        this.tank2HPText.setFill(Color.GREENYELLOW);
+        this.tank1HPText.setFill(Color.GRAY);
+    }
+
+    public void moveAngleText(double x, double y) {
+        this.angleText.setX(x - 25);
+        this.angleText.setY(y - 20);
+    }
+
+    public void movePowerText(double x, double y) {
+        this.powerText.setX(x - 25);
+        this.powerText.setY(y - 50);
+    }
+
+    // Takes the speed of the tank and moves the tank, needs a negative if moving left 
+    public void moveTank1GunX(double speed) {
+        this.tank1Gun.setStartX(this.tank1Gun.getStartX() + speed);
+        this.tank1Gun.setEndX(this.tank1Gun.getEndX() + speed);
+    }
+
+    public void moveTank2GunX(double speed) {
+        this.tank2Gun.setStartX(this.tank2Gun.getStartX() + speed);
+        this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
+    }
+
+    public void rotateTank1Gun(double x, double angle) {
+        if (angle <= 25){
+            this.tank1Gun.setEndX(x + 45);
+            this.tank1Gun.setEndY(530);
+        }
+        else if (angle <= 50) {
+            this.tank1Gun.setEndX(x + 40);
+            this.tank1Gun.setEndY(525);
+        }
+        else if (angle <= 70) {
+            this.tank1Gun.setEndX(x + 35);
+            this.tank1Gun.setEndY(520);
+        }
+        else if (angle <= 90) {
+            this.tank1Gun.setEndX(x + 30);
+            this.tank1Gun.setEndY(515);
+        }
     }
 };
