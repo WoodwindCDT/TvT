@@ -7,8 +7,8 @@ public class MissleLaunch {
 
     // default constructor
     public MissleLaunch(Calculation c) {
-        System.out.println("Got a calculation!");
         this.c = c;
+        System.out.println("Calculation Complete");
         c.print();
     }
 };

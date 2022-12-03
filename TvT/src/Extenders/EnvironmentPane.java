@@ -61,12 +61,6 @@ public class EnvironmentPane extends Pane {
     };
 
     // Display Text to pane via Text object creation and pass to pane children
-    // public void changeScore(int num) {
-    //     this.score = num;
-    //     this.displayScore.setText(Integer.toString(score));
-    // }
-
-    // Display Text to pane via Text object creation and pass to pane children
     public void changeMessage(char type, String msg) {
         if (type == 'm') this.displayMessage.setText(msg);
         if (type == 'p') this.displayPlayer.setText(msg);
@@ -137,12 +131,12 @@ public class EnvironmentPane extends Pane {
     public void moveTank1GunX(double speed) {
         this.tank1Gun.setStartX(this.tank1Gun.getStartX() + speed);
         this.tank1Gun.setEndX(this.tank1Gun.getEndX() + speed);
-    }
+    };
 
     public void moveTank2GunX(double speed) {
         this.tank2Gun.setStartX(this.tank2Gun.getStartX() + speed);
         this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
-    }
+    };
 
     public void rotateTank1Gun(double x, double angle) {
         if (angle <= 25){

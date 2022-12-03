@@ -77,7 +77,7 @@ public class Controller {
                     System.err.println("Cannot launch twice in one turn!");
                     System.out.println("Issuer: " + this + " suspect: " + this.in_Play.getName());
                     return;
-                }; 
+                };
             };
             // Launches missle
             if (e.getCode() == KeyCode.ENTER) TankKEEnter(); 
@@ -99,7 +99,7 @@ public class Controller {
 
         // setting instance on controller only THIS launch
         // provides tanks, angle and velocity from user as well
-        this.calc = new Calculation(provideTanks(), v, a);
+        this.calc = new Calculation(this.in_Play, provideTanks(), v, a);
     
         if (this.calc.readyToFire()) {
             this.missleLaunch = this.calc.readyToFire();
@@ -141,8 +141,7 @@ public class Controller {
     // Missle launch start
     private void TankKESpace(double[] largs) {
         // Expecting some angle and power from user
-        // double velocity = largs[0];
-        // double angle = largs[1]; // preset vars for testing only
+        // Calc height of tank
         handleMissleLaunch(largs[0], largs[1]);
     };
 
@@ -200,11 +199,10 @@ public class Controller {
         setEPText(sendAsMessage, "Launch Complete");
         setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
         this.missleLaunch = false;
+        // to reset angle values on change
         this.ep.changeAngle(0);
         this.ep.changePower(0);
         this.turn = !this.turn;
-        this.ep.changeAngle(0);
-        this.ep.changePower(0);
         if(this.turn) this.ep.highlightTank1();
         else this.ep.highlightTank2();
     };
