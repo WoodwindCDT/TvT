@@ -144,22 +144,74 @@ public class EnvironmentPane extends Pane {
         this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
     }
 
+    // Takes the current position of the tank, checks the firing angle, and adjusts the tankGun line
     public void rotateTank1Gun(double x, double angle) {
-        if (angle <= 25){
+        if (angle <= 10){
             this.tank1Gun.setEndX(x + 45);
             this.tank1Gun.setEndY(530);
+        }
+        else if (angle <= 25) {
+            this.tank1Gun.setEndX(x + 43);
+            this.tank1Gun.setEndY(527);
+        }
+        else if (angle <= 40) {
+            this.tank1Gun.setEndX(x + 41.5);
+            this.tank1Gun.setEndY(526);
         }
         else if (angle <= 50) {
             this.tank1Gun.setEndX(x + 40);
             this.tank1Gun.setEndY(525);
         }
+        else if (angle <= 60) {
+            this.tank1Gun.setEndX(x + 37);
+            this.tank1Gun.setEndY(523);
+        }
         else if (angle <= 70) {
             this.tank1Gun.setEndX(x + 35);
             this.tank1Gun.setEndY(520);
         }
+        else if (angle <= 80) {
+            this.tank1Gun.setEndX(x + 32.5);
+            this.tank1Gun.setEndY(517);
+        }
         else if (angle <= 90) {
             this.tank1Gun.setEndX(x + 30);
             this.tank1Gun.setEndY(515);
+        }
+    }
+
+    public void rotateTank2Gun(double x, double angle) {
+        if (angle <= 10){
+            this.tank2Gun.setEndX(x - 15);
+            this.tank2Gun.setEndY(530);
+        }
+        else if (angle <= 25) {
+            this.tank2Gun.setEndX(x - 13);
+            this.tank2Gun.setEndY(527);
+        }
+        else if (angle <= 40) {
+            this.tank2Gun.setEndX(x - 11.5);
+            this.tank2Gun.setEndY(526);
+        }
+        else if (angle <= 50) {
+            this.tank2Gun.setEndX(x - 10);
+            this.tank2Gun.setEndY(525);
+        }
+        else if (angle <= 60) {
+            this.tank2Gun.setEndX(x - 7);
+            this.tank2Gun.setEndY(523);
+        }
+        else if (angle <= 70) {
+            this.tank2Gun.setEndX(x - 5);
+            this.tank2Gun.setEndY(520);
+        }
+        else if (angle <= 80) {
+            this.tank2Gun.setEndX(x - 3);
+            this.tank2Gun.setEndY(517);
+        }
+        else if (angle <= 90) {
+            this.tank2Gun.setEndX(x);
+            this.tank2Gun.setEndY(515);
         }
     }
 };
