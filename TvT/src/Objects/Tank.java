@@ -15,7 +15,7 @@ public class Tank extends PositionCapture implements TankInterface, ObjectInterf
     private double power;
     private double objPosX; // starting position at any time .. if scene were to change or terrain, the position of tank would be preserved, and controller would not require to hold this
     private double objPosY; // starting position at any time
-    private double objPosAngle; // angle of launcher
+    private double objPosAngle = 90; // angle of launcher
     private double condition; // should be 100 "default" but can change if user may set something, or the
     private Missle[] missle;
     private Rectangle body;

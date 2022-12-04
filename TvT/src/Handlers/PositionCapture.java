@@ -32,12 +32,20 @@ public class PositionCapture {
 
     // x 0, y 1;
     public double[] getObjectCurrentPosition() {
-        return new double[]{this.controlled_pos_x, this.controlled_pos_y}; // returns double array contains x,y coord of object
+        return new double[]{this.controlled_pos_x, this.controlled_pos_y}; // returns double array contains x[0],y[1] coord of object
     };
+
+    public double getObjectCurrentPostionX() {
+        return this.controlled_pos_x;
+    }
+
+    public double getObjectCurrentPostionY() {
+        return this.controlled_pos_y;
+    }
 
     // power 0, angle 1;
     public double[] getObjectCurrentLaunchPosition() {
-        return new double[]{this.controlled_power, this.controlled_angle}; // returns double array contains x,y coord of object
+        return new double[]{this.controlled_power, this.controlled_angle}; // returns double array contains pwr[0], angle[1]
     };
 
     public void setObjectCurrentPosition_X(double x) {
@@ -46,17 +54,26 @@ public class PositionCapture {
     };
 
     public void setObjectCurrentPosition_Y(double y) {
-        // this.setDistanceTraveled(y);
         this.controlled_pos_y = y;
     };
 
     public void setObjectCurrentAngle(double a) {
         this.controlled_angle = a;
+        System.out.println("Angle: " + this.controlled_angle);
     };
+
+    public double getObjectControlledAngle() {
+        return this.controlled_angle;
+    }
 
     public void setObjectCurrentPower(double p) {
         this.controlled_power = p;
+        System.out.println("PWR: " + this.controlled_power);
     };
+
+    public double getObjectCurrentPower() {
+        return this.controlled_power;
+    }
 
     public String distanceTraveled() {
         double tempDT = this.distance_traveled;
@@ -82,6 +99,6 @@ public class PositionCapture {
     };
 
     public void resetObject_ANGLE() {
-        this.setObjectCurrentAngle(0);
+        this.setObjectCurrentAngle(90);
     };
 };
