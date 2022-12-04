@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
 public class Controller {
 
     private final int TANK_AMOUNT = 2;
-    private final double angleMin = 0;
-    private final double angleMax = 90;
+    private final double angleMin = 90;
+    private final double angleMax = 180;
     
     // Possible key inputs WE want
     ArrayList<KeyCode> keys = new ArrayList<>() {
@@ -23,6 +23,7 @@ public class Controller {
             add(KeyCode.D); // interface allowing +1 adds to angle of shot
             add(KeyCode.W); // increases power of shot
             add(KeyCode.S); // decreases power of shot
+            add(KeyCode.R); // for restart!
             add(KeyCode.ENTER); // dials in power/angle
         };
     };
@@ -36,17 +37,19 @@ public class Controller {
     private boolean missleLaunch = false;
     private Tank in_Play; // player 1 is first
     private Calculation calc; // player launch calculations
+    private boolean gameover = false;
     
     // default constructor
     public Controller(EnvironmentPane ep) {
         System.out.println("Controller Loaded");
         this.ep = ep;
         System.out.println("EnvironmentPane loaded: " + this.ep);
-        this.ep.changeMessage(sendAsMessage, "Welcome! I can be changed with Controller.");
+        // this.ep.changeMessage(sendAsMessage, "Welcome! I can be changed with Controller.");
         //Adding tanks to controller
         // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
         Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
         addTank(new Tank("t1", Color.RED, 10, 0, 90, 530, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 530, 100, arsenal)));
+        setHealth();
     };
 
     public void addTank(PositionCapture t1, PositionCapture t2) {
@@ -57,13 +60,14 @@ public class Controller {
     // Handles input from user during their turn
     public void changeTankPosition(KeyEvent e) {
         // check to see if key is expected
-        if (checkKey(e)) {
+        if (checkKey(e) && !this.gameover) {
+            setEPText(sendAsMessage, "");
             // Player 2 turn
             if (turn == false) this.in_Play = this.tanks[1];
             else this.in_Play = this.tanks[0];
 
             // Sending to ep to show player in play
-            setEPText(sendAsPlayer, this.in_Play.getName() + " is in play.");
+            // setEPText(sendAsPlayer, this.in_Play.getName() + " is in play.");
 
             double currPosX = this.in_Play.getObjectCurrentPosition()[0];
             double[] launchArgs = this.in_Play.getObjectCurrentLaunchPosition();
@@ -96,7 +100,6 @@ public class Controller {
 
     // Handling calculation calling!
     private void handleMissleLaunch(double v, double a) {
-
         // setting instance on controller only THIS launch
         // provides tanks, angle and velocity from user as well
         this.calc = new Calculation(this.in_Play, provideTanks(), v, a);
@@ -122,7 +125,7 @@ public class Controller {
     // Tank position
     private void TankKELeft(double currPosX) {
         this.in_Play.setObjectCurrentPosition_X(currPosX - this.in_Play.getSpeed()); // speed will be how "Fast" it will change position
-        setEPText(sendAsMessage, this.in_Play.distanceTraveled());
+        // setEPText(sendAsMessage, this.in_Play.distanceTraveled());
         this.ep.moveAngleText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
         this.ep.movePowerText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
         if(turn) this.ep.moveTank1GunX(-(this.in_Play.getSpeed()));
@@ -131,7 +134,7 @@ public class Controller {
 
     private void TankKERight(double currPosX) {
         this.in_Play.setObjectCurrentPosition_X(currPosX + this.in_Play.getSpeed());
-        setEPText(sendAsMessage, this.in_Play.distanceTraveled());
+        // setEPText(sendAsMessage, this.in_Play.distanceTraveled());
         this.ep.moveAngleText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
         this.ep.movePowerText(this.in_Play.getObjectCurrentPostionX(), this.in_Play.getObjectCurrentPostionY());
         if(turn) this.ep.moveTank1GunX(this.in_Play.getSpeed());
@@ -147,11 +150,13 @@ public class Controller {
 
     private void TankKEEnter() {
         if (this.missleLaunch && this.calc.readyToFire()) {
+            this.ep.removeCircle();
             // should fire missle
-            new MissleLaunch(this.calc);
+            MissleLaunch ml = new MissleLaunch(this.calc, this);
+            this.ep.setMisslePos(ml.getCircle());
             endTurn();
         };
-    }
+    };
 
     // handle temp power state
     private void TankKEW(double pwr) {
@@ -198,12 +203,13 @@ public class Controller {
 
     private void endTurn() {
         // Sending to ep to show player in play
-        setEPText(sendAsMessage, "Launch Complete");
-        setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
+        // setEPText(sendAsMessage, "Launch Complete");
+        // setEPText(sendAsPlayer, this.in_Play.getName() + " ended their turn.");
         this.missleLaunch = false;
         // to reset angle values on change
         this.ep.changeAngle(0);
         this.ep.changePower(0);
+        setHealth();   
         this.turn = !this.turn;
         if(this.turn) this.ep.highlightTank1();
         else this.ep.highlightTank2();
@@ -214,4 +220,13 @@ public class Controller {
         if (this.keys.contains(e.getCode())) return true;
         return false;
     };
+
+    protected void gameOver() {
+        setHealth();
+        this.gameover = true;
+    }
+
+    private void setHealth() {
+        this.ep.changeHealth(this.tanks[0].getCondition(), this.tanks[1].getCondition());
+    }
 };

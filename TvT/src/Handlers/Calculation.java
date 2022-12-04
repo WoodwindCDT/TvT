@@ -11,6 +11,7 @@ import static Assets.Constants.calcfPos_X_NOHEIGHT;
 import static Assets.Constants.calcfPos_X_WITHHEIGHT;
 import static Assets.Constants.calc_vyS;
 import static Assets.Constants.toRad;
+import static Assets.Constants.toPos;
 
 import Interfaces.CalcResultInterface;
 import Objects.Tank;
@@ -24,6 +25,8 @@ public class Calculation {
     protected double angle; // angle provided
     protected double height;
     private boolean loaded = false; // loaded is true when the calculation are completed
+    private boolean hit = false;
+    private boolean gameover = false;
 
     // final results
     private double vx; // velocity of object
@@ -31,9 +34,80 @@ public class Calculation {
     private double tof; // time of flight
     private double capH; // max height reached
     private double Xf; // final position x of projectile
+    private double damage;
+    private PositionCapture winner;
+    private PositionCapture loser;
+    
+    protected class HitOrMiss {
+        double radius = 25;
 
-    // TODO: Add missle damage
-    // TODO: Adjust calculations for other enemy tank via comparing reference of object with second tank
+        public HitOrMiss() {
+            double t1 = tanks[0].getObjectCurrentPostionX();
+            double t2 = tanks[1].getObjectCurrentPostionX();;
+            determineHit(t1, t2);
+        };
+        
+        // algo for determining hit on tank
+        private void determineHit(double t1, double t2) {
+            double d1; // tank 1 pos
+            double d2; // tank 2 pos
+            // accomidate for tank2 or tank 1, looking at reference
+            if (checkInPlay()) {
+                d1 = toPos(t1 - Xf);
+                d2 = toPos(Xf - t2);
+            } else {
+                d1 = toPos(Xf - t1);
+                d2 = toPos(Xf - t2);
+            }
+
+            // radius of blast is standard set at 25!
+            if (d1 <= radius || d2 <= radius) {
+                hit = true;
+                System.out.println("Got a hit!");
+                if (d1 <= radius) {
+                    determineDamage(tanks[0]);
+                } else {
+                    determineDamage(tanks[1]);
+                }
+
+            } else {
+                System.out.println("No Hit!");
+                hit = false;
+                return;
+            }
+
+            System.out.println("Distance of tank 1: " + t1 + " Distance of tank 2: " + t2);
+            System.out.println("Distance from first tank: " + d1 + " Distance from second tank: " + d2);
+        };
+
+        // tank in radius loses health according to enemy missle damage capability!
+        private void determineDamage(PositionCapture t) {
+            Tank tank = ((Tank)t);
+
+            double health = tank.getCondition();
+            double res = health - getDamage(tank);
+            
+            if (res <= 0) {
+                System.out.println("Tank: " + tank.getName() + " is disabled!");
+                if (checkInPlay()) {
+                    winner = tanks[1];
+                } else {
+                    winner = tanks[0];
+                }
+                loser = tank;
+                gameover = true;
+            }
+
+            damage = res;
+            tank.setCondition(res);
+            System.out.println("Tank: " + tank.getName() + " has: " + tank.getCondition() + " health left!");
+        };
+
+        private double getDamage(Tank t) {
+            return t.getMissle(0).getPower();
+        };
+    };
+
     // result with no height kinematics
     protected class CalcNOHeight implements CalcResultInterface {
         // complete calcs
@@ -56,6 +130,10 @@ public class Calculation {
 
         // Calculating final position
         public void funk_fp() {
+            if (checkInPlay()) {
+                setFinalPosition(toPos(calcfPos_X_NOHEIGHT(getVelocity_X(), getVelocity_Y()) - in_Play.getObjectCurrentPostionX()));
+                return;
+            }
             setFinalPosition(calcfPos_X_NOHEIGHT(getVelocity_X(), getVelocity_Y()) + in_Play.getObjectCurrentPostionX());
         };
     }
@@ -68,8 +146,8 @@ public class Calculation {
         // complete calcs
         public CalcWHeight() {
             funk_tof();
-           funk_cmh();
-           funk_fp();
+            funk_cmh();
+            funk_fp();
         }
 
         // Calculating time of flight
@@ -84,7 +162,11 @@ public class Calculation {
 
         // Calculating final position
         public void funk_fp() {
-            setFinalPosition(calcfPos_X_WITHHEIGHT(getVelocity_X(), getVelocity_Y(), vyS, h) + in_Play.getObjectCurrentPostionX());
+            if (checkInPlay()) {
+                setFinalPosition(toPos(calcfPos_X_WITHHEIGHT(getVelocity_X(), getVelocity_Y(), vyS, h) - in_Play.getObjectCurrentPostionX()));
+                return;
+            }
+            setFinalPosition(calcfPos_X_NOHEIGHT(getVelocity_X(), getVelocity_Y()) + in_Play.getObjectCurrentPostionX());
         }
     }
 
@@ -119,7 +201,9 @@ public class Calculation {
         } else {
             new CalcNOHeight();
         }
-    }
+        // Determine hit/damage
+        new HitOrMiss();
+    };
 
     private void set_x_y_a() {
         // must set angle to radians
@@ -131,51 +215,75 @@ public class Calculation {
     // Setting Velocity in Y direction
     private void setVelocity_Y(double v) {
         this.vy = v;
-    }
+    };
 
     // Setting Velocity in X direction
     private void setVelocity_X(double v) {
         this.vx = v;
-    }
+    };
 
     // Setting Velocity in X direction
     private void setTimeofFlight(double t) {
         this.tof = t;
-    }
+    };
 
     private void setFinalPosition(double x) {
         this.Xf = x;
-    }
+    };
 
     private void setMaxHeight(double h) {
         this.capH = h;
-    }
+    };
 
     // Missle loaded! Ready for launch by user
     public boolean readyToFire() {
         return this.loaded;
     };
 
+    public double getHeight() {
+        return this.height;
+    }
+
     // getters for missle launch
     public double getVelocity_X() {
         return this.vx;
-    }
+    };
 
     public double getVelocity_Y() {
         return this.vy;
-    }
+    };
 
     public double getTimeofFlight() {
         return this.tof;
-    }
+    };
 
     public double getMaxHeight() {
         return this.capH;
-    }
+    };
 
     public double getFinalPosition() {
         return this.Xf;
-    } 
+    };
+
+    public boolean getHit() {
+        return this.hit;
+    };
+
+    public boolean getGameOver() {
+        return this.gameover;
+    };
+
+    public double getDamage() {
+        return this.damage;
+    };
+
+    public PositionCapture getWinner() {
+        return this.winner;
+    }
+
+    public PositionCapture getLoser() {
+        return this.loser;
+    }
 
     public void printLastAction() {
         System.out.println(
@@ -194,7 +302,7 @@ public class Calculation {
             "---------------------------------------" + '\n' +
             "Initial Velocity (POWER): " + this.velocity + '\n' +
             "Angle (rads): " + this.angle + '\n' +
-            "Velocity X: " + getVelocity_X() + '\n' +
+            "Velocity X: " + toPos(getVelocity_X()) + '\n' +
             "Velocity Y: " + getVelocity_Y() + '\n' +
             "Time of Flight: " + getTimeofFlight() + '\n' +
             "Max Height Reached: " + getMaxHeight() + '\n' +
@@ -214,5 +322,9 @@ public class Calculation {
     private double getTankHeight() {
         double currH = this.in_Play.getObjectCurrentPostionY();
         return currH - 530; // gets height from starting plane height
+    }
+
+    private boolean checkInPlay() {
+        return this.in_Play == tanks[1];
     }
 };

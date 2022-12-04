@@ -99,6 +99,6 @@ public class PositionCapture {
     };
 
     public void resetObject_ANGLE() {
-        this.setObjectCurrentAngle(0);
+        this.setObjectCurrentAngle(90);
     };
 };

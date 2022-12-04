@@ -6,6 +6,7 @@ import Objects.Tank;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -31,6 +32,7 @@ public class EnvironmentPane extends Pane {
     Text angleText = new Text(400, 65, "Angle: ");
     Line tank1Gun = new Line(120, 530, 130, 525);
     Line tank2Gun = new Line(500, 530, 490, 525);
+    Circle trench;
 
     // Default constructor
     public EnvironmentPane() {
@@ -104,7 +106,7 @@ public class EnvironmentPane extends Pane {
 
     public void changeHealth(double t1HP, double t2HP) {
         this.tank1HPText.setText("Tank 1 Health: " + t1HP);
-        this.tank1HPText.setText("Tank 2 Health: " + t2HP);
+        this.tank2HPText.setText("Tank 2 Health: " + t2HP);
     }
 
     public void highlightTank1() {
@@ -138,72 +140,81 @@ public class EnvironmentPane extends Pane {
         this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
     };
 
+    public void setMisslePos(Circle c) {
+        this.trench = c;
+        this.getChildren().add(this.trench);
+    }
+
+    public void removeCircle() {
+        this.getChildren().remove(this.trench);
+    };
+
     // Takes the current position of the tank, checks the firing angle, and adjusts the tankGun line
     public void rotateTank1Gun(double x, double angle) {
-        if (angle <= 10){
+        if (angle <= 90){
             this.tank1Gun.setEndX(x + 45);
             this.tank1Gun.setEndY(530);
         }
-        else if (angle <= 25) {
+        else if (angle <= 115) {
             this.tank1Gun.setEndX(x + 43);
             this.tank1Gun.setEndY(527);
         }
-        else if (angle <= 40) {
+        else if (angle <= 130) {
             this.tank1Gun.setEndX(x + 41.5);
             this.tank1Gun.setEndY(526);
         }
-        else if (angle <= 50) {
+        else if (angle <= 145) {
             this.tank1Gun.setEndX(x + 40);
             this.tank1Gun.setEndY(525);
         }
-        else if (angle <= 60) {
+        else if (angle <= 160) {
             this.tank1Gun.setEndX(x + 37);
             this.tank1Gun.setEndY(523);
         }
-        else if (angle <= 70) {
+        else if (angle <= 165) {
             this.tank1Gun.setEndX(x + 35);
             this.tank1Gun.setEndY(520);
         }
-        else if (angle <= 80) {
+        else if (angle <= 175) {
             this.tank1Gun.setEndX(x + 32.5);
             this.tank1Gun.setEndY(517);
         }
-        else if (angle <= 90) {
+        else if (angle <= 180) {
             this.tank1Gun.setEndX(x + 30);
             this.tank1Gun.setEndY(515);
         }
     }
 
     public void rotateTank2Gun(double x, double angle) {
-        if (angle <= 10){
+        if (angle <= 90){
             this.tank2Gun.setEndX(x - 15);
             this.tank2Gun.setEndY(530);
         }
-        else if (angle <= 25) {
+        else if (angle <= 115) {
             this.tank2Gun.setEndX(x - 13);
             this.tank2Gun.setEndY(527);
         }
-        else if (angle <= 40) {
+        else if (angle <= 130) {
             this.tank2Gun.setEndX(x - 11.5);
             this.tank2Gun.setEndY(526);
         }
-        else if (angle <= 50) {
+        else if (angle <= 145) {
             this.tank2Gun.setEndX(x - 10);
             this.tank2Gun.setEndY(525);
         }
-        else if (angle <= 60) {
+        else if (angle <= 160) {
             this.tank2Gun.setEndX(x - 7);
             this.tank2Gun.setEndY(523);
         }
-        else if (angle <= 70) {
+        else if (angle <= 165) {
             this.tank2Gun.setEndX(x - 5);
             this.tank2Gun.setEndY(520);
         }
-        else if (angle <= 80) {
+        else if (angle <= 175) {
             this.tank2Gun.setEndX(x - 3);
             this.tank2Gun.setEndY(517);
         }
-        else if (angle <= 90) {
+        else if (angle <= 180) {
             this.tank2Gun.setEndX(x);
             this.tank2Gun.setEndY(515);
         }
