@@ -275,28 +275,25 @@ public class Calculation {
         return this.loser;
     };
 
-    public void printLastAction() {
-        System.out.println(
-            "Last Action Conditions: " + '\n' +
-            "---------------------------------------"
-        );
-        for (PositionCapture t : this.tanks) {
-            ((Tank)t).print();
-        };
+    public String printLastAction() {
+        String str = "Last Action Conditions: " + '\n' +
+        "---------------------------------------" + "\n"; 
+        str += print();
+        return str;
     };
 
     // prints calculation properties
-    public void print() {
-        System.out.println(
+    public String print() {
+        return(
             "Calculation Results: " + '\n' +
             "---------------------------------------" + '\n' +
-            "Initial Velocity (POWER): " + this.velocity + '\n' +
+            "Initial Velocity (Force): " + this.velocity + " N" + '\n' +
             "Angle (rads): " + this.angle + '\n' +
-            "Velocity X: " + toPos(getVelocity_X()) + '\n' +
-            "Velocity Y: " + getVelocity_Y() + '\n' +
-            "Time of Flight: " + getTimeofFlight() + '\n' +
-            "Max Height Reached: " + getMaxHeight() + '\n' +
-            "Final X Position: " + getFinalPosition() + '\n'
+            "Velocity X: " + toPos(getVelocity_X()) + " m/s" + '\n' +
+            "Velocity Y: " + getVelocity_Y() + " m/s" + '\n' +
+            "Time of Flight: " + getTimeofFlight() + " s" + '\n' +
+            "Max Height Reached: " + getMaxHeight() + " m" + '\n' +
+            "Final X Position: " + getFinalPosition() + " m" + '\n'
         );
     };
 

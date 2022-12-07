@@ -162,7 +162,7 @@ public class Controller {
             // should fire missle
             MissleLaunch ml = new MissleLaunch(this.calc, this);
             this.ep.setVisual(ml.getCircle(), ml.getQC());
-            this.ep.changeMessage(sendAsMessage, this.calc.getHit());
+            this.ep.changeMessage(sendAsMessage, this.calc.getHit() + "\n" + this.calc.printLastAction());
             if (this.calc.getGameOver()) {
                 gameOver();
                 return;

@@ -56,11 +56,20 @@ public class MissleLaunch {
     private void createCurve() {
         PositionCapture t = this.ctrl.getInPlay();
         this.qc = new QuadCurve();
-        this.qc.setStartX(t.getObjectCurrentPostionX());
-        this.qc.setStartY(t.getObjectCurrentPostionY());
-        this.qc.setControlX(this.c.getFinalPosition() / 2);
-        this.qc.setEndX(this.c.getFinalPosition());
-        this.qc.setEndY(t.getObjectCurrentPostionY());
+        if (t == this.ctrl.provideTanks()[1]) {
+            this.qc.setStartX(t.getObjectCurrentPostionX());
+            this.qc.setStartY(t.getObjectCurrentPostionY());
+            this.qc.setControlX(this.c.getFinalPosition() );
+            this.qc.setEndX(this.c.getFinalPosition());
+            this.qc.setEndY(t.getObjectCurrentPostionY());
+
+        } else {
+            this.qc.setStartX(t.getObjectCurrentPostionX() + 30);
+            this.qc.setStartY(t.getObjectCurrentPostionY());
+            this.qc.setControlX(this.c.getFinalPosition() );
+            this.qc.setEndX(this.c.getFinalPosition());
+            this.qc.setEndY(t.getObjectCurrentPostionY());
+        }
         this.qc.setFill(Color.TRANSPARENT);
         this.qc.setStroke(Color.WHITE);
     };

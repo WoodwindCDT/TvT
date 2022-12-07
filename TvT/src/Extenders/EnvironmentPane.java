@@ -20,7 +20,7 @@ public class EnvironmentPane extends Pane {
     private ArrayList<Object> arr = new ArrayList<Object>(); // ArrayList should contain all objects for rendering
     // displayScore will be fed by controller
     // Text displayScore = new Text(50, 50, Integer.toString()); // Will get score from controller
-    private Text displayMessage = new Text(100, 200, "");
+    private Text displayMessage = new Text(100, 100, "");
     private Text displayPlayer = new Text(200, 300, "");
     private Controller controller;
     private Line sLine = new Line(0, 80, 700, 80);
