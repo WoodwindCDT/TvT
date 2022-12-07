@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.QuadCurve;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -33,6 +34,7 @@ public class EnvironmentPane extends Pane {
     Line tank1Gun = new Line(120, 530, 130, 525);
     Line tank2Gun = new Line(500, 530, 490, 525);
     Circle trench;
+    QuadCurve path;
 
     // Default constructor
     public EnvironmentPane() {
@@ -41,25 +43,8 @@ public class EnvironmentPane extends Pane {
         this.controller = new Controller(this); // Controller will contain reference to Environment Pane for "Control over properties"
 
         System.out.println("Controller created and passed ref: " + controller);
-        this.arr.add(this.displayMessage);
-        this.arr.add(this.displayPlayer);
-        this.arr.add(this.addBtn);
-        this.arr.add(this.terrain);
-        this.arr.add(this.tank1HPText);
-        this.arr.add(this.tank2HPText);
-        this.arr.add(powerText);
-        this.arr.add(angleText);
-        this.arr.add(sLine);
-        this.arr.add(tank1Gun);
-        this.arr.add(tank2Gun);
-
-        // Add tanks to the pane
-        for (Tank t : controller.provideTanks()) {
-            this.arr.add(t);
-        };
         
-        addToChildren(this.arr);
-        highlightTank1();
+        setAll();
     };
 
     // Display Text to pane via Text object creation and pass to pane children
@@ -88,6 +73,7 @@ public class EnvironmentPane extends Pane {
                 Rectangle rec = new Rectangle(pos[0], pos[1], 30, 20); // 30 and 20 are chosen JUST to display
                 rec.setFill(t.getColor());
                 t.setBody(rec);
+                t.print();
                 this.setOnKeyPressed(e -> {
                     this.controller.changeTankPosition(e); // controller changes the tanks position with position capture
                 });
@@ -140,13 +126,16 @@ public class EnvironmentPane extends Pane {
         this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
     };
 
-    public void setMisslePos(Circle c) {
+    public void setVisual(Circle c, QuadCurve qc) {
         this.trench = c;
+        this.path = qc;
         this.getChildren().add(this.trench);
+        this.getChildren().add(this.path);
     }
 
-    public void removeCircle() {
+    public void removeVisual() {
         this.getChildren().remove(this.trench);
+        this.getChildren().remove(this.path);
     };
 
     // Takes the current position of the tank, checks the firing angle, and adjusts the tankGun line
@@ -218,5 +207,34 @@ public class EnvironmentPane extends Pane {
             this.tank2Gun.setEndX(x);
             this.tank2Gun.setEndY(515);
         }
+    }
+
+    public void removeAll() {
+        this.getChildren().clear();
+        this.arr.clear();
+    };
+
+    public void setAll() {
+        // Add tanks to the pane
+        addToArr();
+        for (Tank t : this.controller.provideTanks()) {
+            this.arr.add(t);
+        };
+        addToChildren(this.arr);
+        highlightTank1();
+    };
+
+    private void addToArr() {
+        this.arr.add(this.displayMessage);
+        this.arr.add(this.displayPlayer);
+        this.arr.add(this.addBtn);
+        this.arr.add(this.terrain);
+        this.arr.add(this.tank1HPText);
+        this.arr.add(this.tank2HPText);
+        this.arr.add(powerText);
+        this.arr.add(angleText);
+        this.arr.add(sLine);
+        this.arr.add(tank1Gun);
+        this.arr.add(tank2Gun);
     }
 };

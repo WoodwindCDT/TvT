@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 
 public class Controller {
 
+    private final Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
     private final int TANK_AMOUNT = 2;
     private final double angleMin = 90;
     private final double angleMax = 180;
@@ -47,20 +48,20 @@ public class Controller {
         // this.ep.changeMessage(sendAsMessage, "Welcome! I can be changed with Controller.");
         //Adding tanks to controller
         // Creation of tanks, t2 @ 500 due to visual issues with border ** can't see at max
-        Missle[] arsenal = new Missle[]{new Missle("m1", Color.RED, 10, 20, 0, 40, 100, 0)};
-        addTank(new Tank("t1", Color.RED, 10, 0, 90, 530, 100, arsenal), (new Tank("t2", Color.BLUE, 10, 0, 500, 530, 100, arsenal)));
+        addTank();
         setHealth();
     };
 
-    public void addTank(PositionCapture t1, PositionCapture t2) {
-        this.tanks[0] = (Tank)t1;
-        this.tanks[1] = (Tank)t2;
+    public void addTank() {
+        this.tanks[0] = new Tank("t1", Color.RED, 10, 0, 90, 530, 100, this.arsenal);
+        this.tanks[1] = new Tank("t2", Color.BLUE, 10, 0, 500, 530, 100, this.arsenal);;
     };
 
     // Handles input from user during their turn
     public void changeTankPosition(KeyEvent e) {
         // check to see if key is expected
-        if (checkKey(e) && !this.gameover) {
+        if (!this.gameover) {
+            if (checkKey(e)) {
             setEPText(sendAsMessage, "");
             // Player 2 turn
             if (turn == false) this.in_Play = this.tanks[1];
@@ -92,10 +93,17 @@ public class Controller {
             if (e.getCode() == KeyCode.D) TankKED(launchArgs[1]);
             // finally
             setTankBodyPosition(); // setting result to actual tank body for user view
+            } else {
+                System.err.println("Cannot use that key! Try again.");
+                return;
+            } 
         } else {
-            System.err.println("Cannot use that key! Try again.");
-            return;
-        };
+            System.out.println("Game Over, Press R to play again!");
+            if (e.getCode() == KeyCode.R && this.gameover) {
+                System.out.println("Resetting Game!");
+                resetGame();
+            }
+        }
     };
 
     // Handling calculation calling!
@@ -105,6 +113,7 @@ public class Controller {
         this.calc = new Calculation(this.in_Play, provideTanks(), v, a);
     
         if (this.calc.readyToFire()) {
+            System.out.println("Passed launch phase");
             this.missleLaunch = this.calc.readyToFire();
             setEPText(sendAsMessage, "Missle Launch is ready: " + this.calc.readyToFire() + "\n -> commanded by: " + this.in_Play.getName()
             + '\n' +
@@ -144,17 +153,22 @@ public class Controller {
     // Missle launch start
     private void TankKESpace(double[] largs) {
         // Expecting some angle and power from user
-        // Calc height of tank
         handleMissleLaunch(largs[0], largs[1]);
     };
 
     private void TankKEEnter() {
         if (this.missleLaunch && this.calc.readyToFire()) {
-            this.ep.removeCircle();
+            this.ep.removeVisual();
             // should fire missle
             MissleLaunch ml = new MissleLaunch(this.calc, this);
-            this.ep.setMisslePos(ml.getCircle());
-            endTurn();
+            this.ep.setVisual(ml.getCircle(), ml.getQC());
+            this.ep.changeMessage(sendAsMessage, this.calc.getHit());
+            if (this.calc.getGameOver()) {
+                gameOver();
+                return;
+            } else {
+                endTurn();
+            }
         };
     };
 
@@ -221,12 +235,27 @@ public class Controller {
         return false;
     };
 
-    protected void gameOver() {
-        setHealth();
+    public void gameOver() {
+        this.ep.changeMessage(sendAsMessage, "Loser is: " + ((Tank)this.calc.getLoser()).getName() + "\n" + " Press R to play again!");
         this.gameover = true;
-    }
+        setHealth();
+    };
 
     private void setHealth() {
         this.ep.changeHealth(this.tanks[0].getCondition(), this.tanks[1].getCondition());
-    }
+    };
+
+    private void resetGame() {
+        this.ep.removeAll();
+        resetController();
+    };
+
+    private void resetController() {
+        this.gameover = false;
+        this.tanks = new Tank[TANK_AMOUNT];
+        addTank();
+        this.ep.setAll();
+        setHealth();
+        this.missleLaunch = false;
+    };
 };

@@ -35,7 +35,6 @@ public class Calculation {
     private double capH; // max height reached
     private double Xf; // final position x of projectile
     private double damage;
-    private PositionCapture winner;
     private PositionCapture loser;
     
     protected class HitOrMiss {
@@ -89,11 +88,6 @@ public class Calculation {
             
             if (res <= 0) {
                 System.out.println("Tank: " + tank.getName() + " is disabled!");
-                if (checkInPlay()) {
-                    winner = tanks[1];
-                } else {
-                    winner = tanks[0];
-                }
                 loser = tank;
                 gameover = true;
             }
@@ -265,8 +259,8 @@ public class Calculation {
         return this.Xf;
     };
 
-    public boolean getHit() {
-        return this.hit;
+    public String getHit() {
+        return this.hit ? "Got a HIT!" : "No HIT!";
     };
 
     public boolean getGameOver() {
@@ -277,13 +271,9 @@ public class Calculation {
         return this.damage;
     };
 
-    public PositionCapture getWinner() {
-        return this.winner;
-    }
-
     public PositionCapture getLoser() {
         return this.loser;
-    }
+    };
 
     public void printLastAction() {
         System.out.println(
