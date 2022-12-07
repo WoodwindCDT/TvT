@@ -1,9 +1,15 @@
 # TvT
 > Group: Cristian Turbeville & Seth Morris
 
-### Notable design features: The program uses kinematic equations to calculate the resultant position of a projectile.
+### Notable design features
+- The program uses kinematic equations to calculate the resultant position of a projectile. <br />
+- The program's tanks are not aware of their position, as they are PositionCapture objects, which control their position along the EnvironmentPane. <br />
+- The program's Controller class also contains functionality in place of random terrain, as the kinematic equations are aware of height differences and can use the correct formula appropriately.
 ---
-### Bugs: The Angle and Power text doesn’t switch over to the other tank when a player’s turn ends, you have to move the tank or adjust the angle or power for it to switch. The missile doesn’t connect sometimes on shots that should hit, haven’t figured out why.
+### Bugs
+- The algorithm for checking if a successful hit occurred will not accomidate for the appropraite position, resulting in the missle's radius of blast overlapping the enemy tank, but not registering a loss of condition (health).
+- Currently, the angle and text for a tank's angle/power does not change according to the turn end, a user must move by clicking "A" or "D" for the text to display above the appropriate tank.
+- QuadCurve for flight path will not display correctly.
 ---
 
 ## Main Success
@@ -16,26 +22,43 @@ A = Angle of Tank Launcher -1
 D = Angle of Tank Launcher +1
 Space = Set calculations AND Prepare for Missle Launch
 Enter = Launch Missle
+R = Restart Game
 
 Main success Missle Launch:
 User clicks Key "W" to increase initical velocity applied at launch
 User clicks Key "D" to increase angle at which a missle will fire
 User clicks Key "Space" to check if their Tank is ready for launch
 User clicks Key "Enter" to fire missle
+User clicks Key "R" to restart the game
 ```
 ---
 
-## Java ReadMe Content
+### Example
 
-The workspace contains two folders by default, where:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+### UML
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+#### Work Concluded
 
-## Dependency Management
+Total Hours: ~24
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Cristian Turbeville:
+- Calculation
+- Controller
+- MissleLaunch
+- PositionCapture
+- Interfaces
+- Objects (Tank, Missle)
+- Constants
+- UML
+
+Seth Morris: 
+- EnvironmentPane
+- Controller
+- PositionCapture
+- Testing
+- Interfaces
+- Objects (Tank, Missle)
+- Presentation
+- UML
