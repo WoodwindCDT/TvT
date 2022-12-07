@@ -8,10 +8,10 @@ import javafx.scene.shape.QuadCurve;
 public class MissleLaunch {
     
     // creating animation based off of calculations
-    Calculation c;
-    Controller ctrl;
-    Circle circle;
-    QuadCurve qc;
+    private Calculation c;
+    private Controller ctrl;
+    private Circle circle;
+    private QuadCurve qc;
 
     // default constructor
     public MissleLaunch(Calculation c, Controller ctrl) {
@@ -50,7 +50,7 @@ public class MissleLaunch {
         this.circle.setCenterY(540);
         this.circle.setStroke(clr);
         this.circle.setStrokeWidth(3);
-        this.circle.setFill(Color.TRANSPARENT);
+        this.circle.setFill(Color.DARKRED);
     };
 
     private void createCurve() {
@@ -58,9 +58,10 @@ public class MissleLaunch {
         this.qc = new QuadCurve();
         this.qc.setStartX(t.getObjectCurrentPostionX());
         this.qc.setStartY(t.getObjectCurrentPostionY());
+        this.qc.setControlX(this.c.getFinalPosition() / 2);
         this.qc.setEndX(this.c.getFinalPosition());
         this.qc.setEndY(t.getObjectCurrentPostionY());
         this.qc.setFill(Color.TRANSPARENT);
-        this.qc.setStroke(Color.BLACK);
+        this.qc.setStroke(Color.WHITE);
     };
 };

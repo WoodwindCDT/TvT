@@ -3,38 +3,39 @@ import java.util.ArrayList;
 
 import Handlers.Controller;
 import Objects.Tank;
-import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class EnvironmentPane extends Pane {
     // Properties for visual interaction
-    ArrayList<Object> arr = new ArrayList<Object>(); // ArrayList should contain all objects for rendering
+    private ArrayList<Object> arr = new ArrayList<Object>(); // ArrayList should contain all objects for rendering
     // displayScore will be fed by controller
     // Text displayScore = new Text(50, 50, Integer.toString()); // Will get score from controller
-    Text displayMessage = new Text(100, 200, "");
-    Text displayPlayer = new Text(200, 300, "");
-    Button addBtn = new Button("Add to Count");
-    Controller controller;
-    Line sLine = new Line(0, 80, 700, 80);
+    private Text displayMessage = new Text(100, 200, "");
+    private Text displayPlayer = new Text(200, 300, "");
+    private Controller controller;
+    private Line sLine = new Line(0, 80, 700, 80);
     
 
     // Objects for which may adjust to inputs
-    Line terrain = new Line(0, 550, 700, 550);
-    Text tank1HPText = new Text(50, 25, "Tank 1 Health: ");
-    Text tank2HPText = new Text(400, 25, "Tank 2 Health: ");
-    Text powerText = new Text(50, 65, "Power: ");
-    Text angleText = new Text(400, 65, "Angle: ");
-    Line tank1Gun = new Line(120, 530, 130, 525);
-    Line tank2Gun = new Line(500, 530, 490, 525);
-    Circle trench;
-    QuadCurve path;
+    private Line terrain = new Line(0, 575, 700, 575);
+    private Text tank1HPText = new Text(50, 25, "Tank 1 Health: ");
+    private Text tank2HPText = new Text(400, 25, "Tank 2 Health: ");
+    private Text powerText = new Text(50, 65, "Power: ");
+    private Text angleText = new Text(400, 65, "Angle: ");
+    private Line tank1Gun;
+    private Line tank2Gun;
+    private Circle trench;
+    private QuadCurve path;
 
     // Default constructor
     public EnvironmentPane() {
@@ -43,7 +44,9 @@ public class EnvironmentPane extends Pane {
         this.controller = new Controller(this); // Controller will contain reference to Environment Pane for "Control over properties"
 
         System.out.println("Controller created and passed ref: " + controller);
-        
+
+        this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, getInsets())));
+
         setAll();
     };
 
@@ -57,8 +60,8 @@ public class EnvironmentPane extends Pane {
     public void addToChildren(ArrayList<Object> arr) {
         for (Object object : arr) {
             if (object instanceof Text) {
-            ((Text)object).setFont(new Font(30)); // setting font size
-            ((Text)object).setFill(Color.AQUA);
+            ((Text)object).setFont(new Font(25)); // setting font size
+            ((Text)object).setFill(Color.YELLOW);
             this.getChildren().add(((Text)object));
             };
             if (object instanceof Line) {
@@ -97,12 +100,12 @@ public class EnvironmentPane extends Pane {
 
     public void highlightTank1() {
         this.tank1HPText.setFill(Color.GREENYELLOW);
-        this.tank2HPText.setFill(Color.GRAY);
+        this.tank2HPText.setFill(Color.DARKVIOLET);
     }
 
     public void highlightTank2() {
         this.tank2HPText.setFill(Color.GREENYELLOW);
-        this.tank1HPText.setFill(Color.GRAY);
+        this.tank1HPText.setFill(Color.DARKVIOLET);
     }
 
     public void moveAngleText(double x, double y) {
@@ -126,9 +129,9 @@ public class EnvironmentPane extends Pane {
         this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
     };
 
-    public void setVisual(Circle c, QuadCurve qc) {
+    public void setVisual(Circle c, Shape qc) {
         this.trench = c;
-        this.path = qc;
+        this.path = (QuadCurve)qc;
         this.getChildren().add(this.trench);
         this.getChildren().add(this.path);
     }
@@ -141,7 +144,7 @@ public class EnvironmentPane extends Pane {
     // Takes the current position of the tank, checks the firing angle, and adjusts the tankGun line
     public void rotateTank1Gun(double x, double angle) {
         if (angle <= 90){
-            this.tank1Gun.setEndX(x + 45);
+            this.tank1Gun.setEndX(x + 41);
             this.tank1Gun.setEndY(530);
         }
         else if (angle <= 115) {
@@ -176,7 +179,7 @@ public class EnvironmentPane extends Pane {
 
     public void rotateTank2Gun(double x, double angle) {
         if (angle <= 90){
-            this.tank2Gun.setEndX(x - 15);
+            this.tank2Gun.setEndX(x - 11);
             this.tank2Gun.setEndY(530);
         }
         else if (angle <= 115) {
@@ -216,18 +219,24 @@ public class EnvironmentPane extends Pane {
 
     public void setAll() {
         // Add tanks to the pane
+        this.tank1Gun = new Line(120, 530, 130, 525);
+        this.tank2Gun = new Line(500, 530, 490, 525);
+        this.tank1Gun.setStroke(Color.WHEAT);
+        this.tank2Gun.setStroke(Color.WHEAT);
+        this.terrain.setStrokeWidth(70);
+        this.terrain.setStroke(Color.DARKGREEN);
         addToArr();
         for (Tank t : this.controller.provideTanks()) {
             this.arr.add(t);
         };
         addToChildren(this.arr);
         highlightTank1();
+        stars();
     };
 
     private void addToArr() {
         this.arr.add(this.displayMessage);
         this.arr.add(this.displayPlayer);
-        this.arr.add(this.addBtn);
         this.arr.add(this.terrain);
         this.arr.add(this.tank1HPText);
         this.arr.add(this.tank2HPText);
@@ -236,5 +245,15 @@ public class EnvironmentPane extends Pane {
         this.arr.add(sLine);
         this.arr.add(tank1Gun);
         this.arr.add(tank2Gun);
+    };
+
+    // create stars
+    private void stars() {
+        for (int i = 0; i < 30; i++) {
+            double rndX = 1 + Math.random() * (699 - 1);
+            double rndY = 100 + Math.random() * (499 - 100);
+            Circle c = new Circle(rndX, rndY, 2, Color.WHITE);
+            this.getChildren().add(c);
+        }
     }
 };

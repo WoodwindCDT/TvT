@@ -7,7 +7,7 @@ public final class Constants {
 
     // Constant values
     public static final double GRAVITY = -9.81;
-    public static final double POS_GRAVITY = 9.81;
+    public static final double POS_GRAVITY = 9.81; 
 
     // Functions which should not change, likely used with calculations
     // Help with Projectile Motion NO HEIGHT

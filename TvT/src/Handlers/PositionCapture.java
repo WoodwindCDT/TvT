@@ -5,12 +5,12 @@ import Objects.Tank;
 // An external function allowing controller to set the position for capture outside of referencing the object directly
 public class PositionCapture {
 
-    Object myObject; // stores reference to object can be Missle, Tank
-    double controlled_pos_x;
-    double controlled_pos_y;
-    double controlled_angle;
-    double controlled_power;
-    double distance_traveled;
+    private Object myObject; // stores reference to object can be Missle, Tank
+    private double controlled_pos_x;
+    private double controlled_pos_y;
+    private double controlled_angle;
+    private double controlled_power;
+    private double distance_traveled;
     
     public PositionCapture() {};
 
