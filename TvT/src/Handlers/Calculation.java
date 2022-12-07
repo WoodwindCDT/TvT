@@ -287,7 +287,7 @@ public class Calculation {
         return(
             "Calculation Results: " + '\n' +
             "---------------------------------------" + '\n' +
-            "Initial Velocity (Force): " + this.velocity + " N" + '\n' +
+            "Initial Velocity: " + this.velocity + " m/s" + '\n' +
             "Angle (rads): " + this.angle + '\n' +
             "Velocity X: " + toPos(getVelocity_X()) + " m/s" + '\n' +
             "Velocity Y: " + getVelocity_Y() + " m/s" + '\n' +

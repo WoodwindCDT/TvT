@@ -34,10 +34,11 @@ User clicks Key "R" to restart the game
 ---
 
 ### Example
-
+![Main Success Example](/assets/msc.png)
 
 ### UML
-
+![UML Diagram](/assets/umldiag2.png)
+_[UML File](/assets/umldiag2.png)_
 
 #### Work Concluded
 
@@ -62,3 +63,8 @@ Seth Morris:
 - Objects (Tank, Missle)
 - Presentation
 - UML
+
+### Extra Tools
+
+[JavaFX](https://openjfx.io/)
+[.jar](https://cs.sfasu.edu/dsingh/)

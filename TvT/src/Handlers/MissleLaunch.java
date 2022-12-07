@@ -12,6 +12,7 @@ public class MissleLaunch {
     private Controller ctrl;
     private Circle circle;
     private QuadCurve qc;
+    // private Circle[] cArr;
 
     // default constructor
     public MissleLaunch(Calculation c, Controller ctrl) {
@@ -72,5 +73,10 @@ public class MissleLaunch {
         }
         this.qc.setFill(Color.TRANSPARENT);
         this.qc.setStroke(Color.WHITE);
+
+        // for (int i = (int)Math.round(t.getObjectCurrentPostionX()); i < this.c.getFinalPosition(); i+=10) {
+        //     Circle c = new Circle(((double)i), t.getObjectCurrentPostionY() - i, 20, Color.WHITE);
+            
+        // }
     };
 };

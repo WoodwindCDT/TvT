@@ -136,6 +136,10 @@ public class EnvironmentPane extends Pane {
         this.getChildren().add(this.path);
     }
 
+    public void graphPlot(Circle c) {
+        this.getChildren().add(c);
+    }
+
     public void removeVisual() {
         this.getChildren().remove(this.trench);
         this.getChildren().remove(this.path);
