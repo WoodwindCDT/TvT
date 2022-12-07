@@ -6,7 +6,9 @@ import Objects.Tank;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.QuadCurve;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -31,6 +33,8 @@ public class EnvironmentPane extends Pane {
     Text angleText = new Text(400, 65, "Angle: ");
     Line tank1Gun = new Line(120, 530, 130, 525);
     Line tank2Gun = new Line(500, 530, 490, 525);
+    Circle trench;
+    QuadCurve path;
 
     // Default constructor
     public EnvironmentPane() {
@@ -39,32 +43,9 @@ public class EnvironmentPane extends Pane {
         this.controller = new Controller(this); // Controller will contain reference to Environment Pane for "Control over properties"
 
         System.out.println("Controller created and passed ref: " + controller);
-        this.arr.add(this.displayMessage);
-        this.arr.add(this.displayPlayer);
-        this.arr.add(this.addBtn);
-        this.arr.add(this.terrain);
-        this.arr.add(this.tank1HPText);
-        this.arr.add(this.tank2HPText);
-        this.arr.add(powerText);
-        this.arr.add(angleText);
-        this.arr.add(sLine);
-        this.arr.add(tank1Gun);
-        this.arr.add(tank2Gun);
-
-        // Add tanks to the pane
-        for (Tank t : controller.provideTanks()) {
-            this.arr.add(t);
-        };
         
-        addToChildren(this.arr);
-        highlightTank1();
+        setAll();
     };
-
-    // Display Text to pane via Text object creation and pass to pane children
-    // public void changeScore(int num) {
-    //     this.score = num;
-    //     this.displayScore.setText(Integer.toString(score));
-    // }
 
     // Display Text to pane via Text object creation and pass to pane children
     public void changeMessage(char type, String msg) {
@@ -92,6 +73,7 @@ public class EnvironmentPane extends Pane {
                 Rectangle rec = new Rectangle(pos[0], pos[1], 30, 20); // 30 and 20 are chosen JUST to display
                 rec.setFill(t.getColor());
                 t.setBody(rec);
+                t.print();
                 this.setOnKeyPressed(e -> {
                     this.controller.changeTankPosition(e); // controller changes the tanks position with position capture
                 });
@@ -110,7 +92,7 @@ public class EnvironmentPane extends Pane {
 
     public void changeHealth(double t1HP, double t2HP) {
         this.tank1HPText.setText("Tank 1 Health: " + t1HP);
-        this.tank1HPText.setText("Tank 2 Health: " + t2HP);
+        this.tank2HPText.setText("Tank 2 Health: " + t2HP);
     }
 
     public void highlightTank1() {
@@ -137,81 +119,122 @@ public class EnvironmentPane extends Pane {
     public void moveTank1GunX(double speed) {
         this.tank1Gun.setStartX(this.tank1Gun.getStartX() + speed);
         this.tank1Gun.setEndX(this.tank1Gun.getEndX() + speed);
-    }
+    };
 
     public void moveTank2GunX(double speed) {
         this.tank2Gun.setStartX(this.tank2Gun.getStartX() + speed);
         this.tank2Gun.setEndX(this.tank2Gun.getEndX() + speed);
+    };
+
+    public void setVisual(Circle c, QuadCurve qc) {
+        this.trench = c;
+        this.path = qc;
+        this.getChildren().add(this.trench);
+        this.getChildren().add(this.path);
     }
+
+    public void removeVisual() {
+        this.getChildren().remove(this.trench);
+        this.getChildren().remove(this.path);
+    };
 
     // Takes the current position of the tank, checks the firing angle, and adjusts the tankGun line
     public void rotateTank1Gun(double x, double angle) {
-        if (angle <= 10){
+        if (angle <= 90){
             this.tank1Gun.setEndX(x + 45);
             this.tank1Gun.setEndY(530);
         }
-        else if (angle <= 25) {
+        else if (angle <= 115) {
             this.tank1Gun.setEndX(x + 43);
             this.tank1Gun.setEndY(527);
         }
-        else if (angle <= 40) {
+        else if (angle <= 130) {
             this.tank1Gun.setEndX(x + 41.5);
             this.tank1Gun.setEndY(526);
         }
-        else if (angle <= 50) {
+        else if (angle <= 145) {
             this.tank1Gun.setEndX(x + 40);
             this.tank1Gun.setEndY(525);
         }
-        else if (angle <= 60) {
+        else if (angle <= 160) {
             this.tank1Gun.setEndX(x + 37);
             this.tank1Gun.setEndY(523);
         }
-        else if (angle <= 70) {
+        else if (angle <= 165) {
             this.tank1Gun.setEndX(x + 35);
             this.tank1Gun.setEndY(520);
         }
-        else if (angle <= 80) {
+        else if (angle <= 175) {
             this.tank1Gun.setEndX(x + 32.5);
             this.tank1Gun.setEndY(517);
         }
-        else if (angle <= 90) {
+        else if (angle <= 180) {
             this.tank1Gun.setEndX(x + 30);
             this.tank1Gun.setEndY(515);
         }
     }
 
     public void rotateTank2Gun(double x, double angle) {
-        if (angle <= 10){
+        if (angle <= 90){
             this.tank2Gun.setEndX(x - 15);
             this.tank2Gun.setEndY(530);
         }
-        else if (angle <= 25) {
+        else if (angle <= 115) {
             this.tank2Gun.setEndX(x - 13);
             this.tank2Gun.setEndY(527);
         }
-        else if (angle <= 40) {
+        else if (angle <= 130) {
             this.tank2Gun.setEndX(x - 11.5);
             this.tank2Gun.setEndY(526);
         }
-        else if (angle <= 50) {
+        else if (angle <= 145) {
             this.tank2Gun.setEndX(x - 10);
             this.tank2Gun.setEndY(525);
         }
-        else if (angle <= 60) {
+        else if (angle <= 160) {
             this.tank2Gun.setEndX(x - 7);
             this.tank2Gun.setEndY(523);
         }
-        else if (angle <= 70) {
+        else if (angle <= 165) {
             this.tank2Gun.setEndX(x - 5);
             this.tank2Gun.setEndY(520);
         }
-        else if (angle <= 80) {
+        else if (angle <= 175) {
             this.tank2Gun.setEndX(x - 3);
             this.tank2Gun.setEndY(517);
         }
-        else if (angle <= 90) {
+        else if (angle <= 180) {
             this.tank2Gun.setEndX(x);
             this.tank2Gun.setEndY(515);
         }
+    }
+
+    public void removeAll() {
+        this.getChildren().clear();
+        this.arr.clear();
+    };
+
+    public void setAll() {
+        // Add tanks to the pane
+        addToArr();
+        for (Tank t : this.controller.provideTanks()) {
+            this.arr.add(t);
+        };
+        addToChildren(this.arr);
+        highlightTank1();
+    };
+
+    private void addToArr() {
+        this.arr.add(this.displayMessage);
+        this.arr.add(this.displayPlayer);
+        this.arr.add(this.addBtn);
+        this.arr.add(this.terrain);
+        this.arr.add(this.tank1HPText);
+        this.arr.add(this.tank2HPText);
+        this.arr.add(powerText);
+        this.arr.add(angleText);
+        this.arr.add(sLine);
+        this.arr.add(tank1Gun);
+        this.arr.add(tank2Gun);
     }
 };
