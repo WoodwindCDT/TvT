@@ -7,7 +7,7 @@
 - The program's Controller class also contains functionality in place of random terrain, as the kinematic equations are aware of height differences and can use the correct formula appropriately.
 ---
 ### Bugs
-- The algorithm for checking if a successful hit occurred will not accomidate for the appropraite position, resulting in the missle's radius of blast overlapping the enemy tank, but not registering a loss of condition (health).
+- The algorithm for checking if a successful hit occurred will not accommodate for the appropriate position, resulting in the missle's radius of blast overlapping the enemy tank, but not registering a loss of condition (health).
 - Currently, the angle and text for a tank's angle/power does not change according to the turn end, a user must move by clicking "A" or "D" for the text to display above the appropriate tank.
 - QuadCurve for flight path will not display correctly.
 ---
